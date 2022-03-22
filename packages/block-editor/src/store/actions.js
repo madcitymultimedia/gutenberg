@@ -11,11 +11,13 @@ import {
 	hasBlockSupport,
 	switchToBlockType,
 	synchronizeBlocksWithTemplate,
+	store as blocksStore,
 } from '@wordpress/blocks';
 import { speak } from '@wordpress/a11y';
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { create, insert, remove, toHTMLString } from '@wordpress/rich-text';
 import deprecated from '@wordpress/deprecated';
+import { store as preferencesStore } from '@wordpress/preferences';
 
 /**
  * Internal dependencies
@@ -416,6 +418,7 @@ export const replaceBlocks =
 				return;
 			}
 		}
+		dispatch.updateInsertUsage( blocks );
 		dispatch( {
 			type: 'REPLACE_BLOCKS',
 			clientIds,
@@ -568,6 +571,52 @@ export function insertBlock(
 	);
 }
 
+/**
+ * Updates the inserter usage statistics in the preferences store.
+ *
+ * @param {Array} blocks The array of blocks that were inserted.
+ */
+export const updateInsertUsage =
+	( blocks ) =>
+	( { registry } ) => {
+		const previousInsertUsage =
+			registry.select( preferencesStore ).get( 'core', 'insertUsage' ) ??
+			{};
+
+		const time = Date.now();
+
+		const updatedInsertUsage = blocks.reduce( ( previousState, block ) => {
+			const { attributes, name: blockName } = block;
+			const match = registry
+				.select( blocksStore )
+				.getActiveBlockVariation( blockName, attributes );
+
+			// If a block variation match is found change the name to be the same with the
+			// one that is used for block variations in the Inserter (`getItemFromVariation`).
+			let id = match?.name ? `${ blockName }/${ match.name }` : blockName;
+			const _insert = { name: id };
+			if ( blockName === 'core/block' ) {
+				_insert.ref = attributes.ref;
+				id += '/' + attributes.ref;
+			}
+
+			const previousCount = previousState?.[ id ]?.count ?? 0;
+
+			return {
+				...previousState,
+				[ id ]: {
+					time,
+					count: previousCount + 1,
+					insert: _insert,
+				},
+			};
+		}, previousInsertUsage );
+
+		registry
+			.dispatch( preferencesStore )
+			.set( 'core', 'insertUsage', updatedInsertUsage );
+	};
+
 /* eslint-disable jsdoc/valid-types */
 /**
  * Action that inserts an array of blocks, optionally at a specific index respective a root block list.
@@ -618,6 +667,7 @@ export const insertBlocks =
 			}
 		}
 		if ( allowedBlocks.length ) {
+			dispatch.updateInsertUsage( blocks );
 			dispatch( {
 				type: 'INSERT_BLOCKS',
 				blocks: allowedBlocks,
@@ -1255,7 +1305,6 @@ export function replaceInnerBlocks(
 		blocks,
 		updateSelection,
 		initialPosition: updateSelection ? initialPosition : null,
-		time: Date.now(),
 	};
 }
 

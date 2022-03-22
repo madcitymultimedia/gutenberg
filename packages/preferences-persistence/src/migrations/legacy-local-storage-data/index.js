@@ -81,6 +81,11 @@ export function convertLegacyData( data ) {
 		{ from: 'core/edit-site', to: 'core/edit-site' },
 		'editorMode'
 	);
+	data = moveIndividualPreference(
+		data,
+		{ from: 'core/block-editor', to: 'core' },
+		'insertUsage'
+	);
 
 	// The new system is only concerned with persisting
 	// 'core/preferences' preferences reducer, so only return that.

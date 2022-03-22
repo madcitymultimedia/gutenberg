@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createReduxStore, registerStore } from '@wordpress/data';
+import { createReduxStore, register } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -32,14 +32,8 @@ export const storeConfig = {
  */
 export const store = createReduxStore( STORE_NAME, {
 	...storeConfig,
-	persist: [ 'preferences' ],
 } );
 
-// We will be able to use the `register` function once we switch
-// the "preferences" persistence to use the new preferences package.
-const registeredStore = registerStore( STORE_NAME, {
-	...storeConfig,
-	persist: [ 'preferences' ],
-} );
+const registeredStore = register( store );
 unlock( registeredStore ).registerPrivateActions( privateActions );
 unlock( registeredStore ).registerPrivateSelectors( privateSelectors );
