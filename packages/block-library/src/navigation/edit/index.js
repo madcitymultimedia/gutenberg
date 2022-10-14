@@ -104,13 +104,18 @@ function Navigation( {
 		icon = 'handle',
 	} = attributes;
 
-	const ref = attributes.ref;
+	// Older versions of the block used an ID based ref attribute.
+	// Allow for this to continue to be used.
+	const ref = attributes.slug || attributes.ref;
+
+	const [ idRef, setIdRef ] = useState( attributes.ref );
 
 	const setRef = useCallback(
-		( postId ) => {
-			setAttributes( { ref: postId } );
+		( { id, slug } ) => {
+			setAttributes( { slug } );
+			setIdRef( id );
 		},
-		[ setAttributes ]
+		[ setAttributes, setIdRef ]
 	);
 
 	const recursionId = `navigationMenu/${ ref }`;
@@ -202,14 +207,16 @@ function Navigation( {
 
 	// Only auto-fallback to the latest published menu.
 	// The REST API already returns items sorted by publishing date.
-	const fallbackNavigationMenuId = navigationMenus?.find(
+	const fallbackNavigationMenu = navigationMenus?.find(
 		( menu ) => menu.status === 'publish'
-	)?.id;
+	);
+
+	const fallbackNavigationMenuId = fallbackNavigationMenu?.id;
 
 	const handleUpdateMenu = useCallback(
-		( menuId, options = { focusNavigationBlock: false } ) => {
+		( menu, options = { focusNavigationBlock: false } ) => {
 			const { focusNavigationBlock } = options;
-			setRef( menuId );
+			setRef( menu );
 			if ( focusNavigationBlock ) {
 				selectBlock( clientId );
 			}
@@ -229,7 +236,7 @@ function Navigation( {
 			hasUncontrolledInnerBlocks ||
 			isCreatingNavigationMenu ||
 			ref ||
-			! fallbackNavigationMenuId
+			! fallbackNavigationMenu
 		) {
 			return;
 		}
@@ -242,12 +249,12 @@ function Navigation( {
 		 *  nor to be undoable, hence why it is marked as non persistent
 		 */
 		__unstableMarkNextChangeAsNotPersistent();
-		setRef( fallbackNavigationMenuId );
+		setRef( fallbackNavigationMenu );
 	}, [
 		ref,
 		setRef,
 		isCreatingNavigationMenu,
-		fallbackNavigationMenuId,
+		fallbackNavigationMenu,
 		hasUncontrolledInnerBlocks,
 		__unstableMarkNextChangeAsNotPersistent,
 	] );
@@ -409,7 +416,7 @@ function Navigation( {
 			'draft'
 		);
 		if ( navMenu ) {
-			handleUpdateMenu( navMenu.id, {
+			handleUpdateMenu( navMenu, {
 				focusNavigationBlock: true,
 			} );
 		}
@@ -427,7 +434,7 @@ function Navigation( {
 		}
 
 		if ( createNavigationMenuIsSuccess ) {
-			handleUpdateMenu( createNavigationMenuPost?.id, {
+			handleUpdateMenu( createNavigationMenuPost, {
 				focusNavigationBlock: true,
 			} );
 
