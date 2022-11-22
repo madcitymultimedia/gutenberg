@@ -17,6 +17,7 @@ import {
 
 export default function save( { attributes, className } ) {
 	const {
+		tagName,
 		textAlign,
 		fontSize,
 		linkTarget,
@@ -61,19 +62,28 @@ export default function save( { attributes, className } ) {
 		[ `has-custom-width wp-block-button__width-${ width }` ]: width,
 		[ `has-custom-font-size` ]: fontSize || style?.typography?.fontSize,
 	} );
-
 	return (
 		<div { ...useBlockProps.save( { className: wrapperClasses } ) }>
-			<RichText.Content
-				tagName="a"
-				className={ buttonClasses }
-				href={ url }
-				title={ title }
-				style={ buttonStyle }
-				value={ text }
-				target={ linkTarget }
-				rel={ rel }
-			/>
+			{ 'button' === tagName ? (
+				<button
+					className={ buttonClasses }
+					title={ title }
+					style={ buttonStyle }
+				>
+					{ text }
+				</button>
+			) : (
+				<RichText.Content
+					tagName={ tagName }
+					className={ buttonClasses }
+					href={ url }
+					title={ title }
+					style={ buttonStyle }
+					value={ text }
+					target={ linkTarget }
+					rel={ rel }
+				/>
+			) }
 		</div>
 	);
 }
