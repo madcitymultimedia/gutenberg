@@ -50,6 +50,7 @@ import * as embed from './embed';
 import * as file from './file';
 import * as form from './form';
 import * as formInput from './form-input';
+import * as formSubmitButton from './form-submit-button';
 import * as gallery from './gallery';
 import * as group from './group';
 import * as heading from './heading';
@@ -234,6 +235,7 @@ const getAllBlocks = () => {
 	if ( window?.__experimentalEnableFormBlocks ) {
 		blocks.push( form );
 		blocks.push( formInput );
+		blocks.push( formSubmitButton );
 	}
 	return blocks.filter( Boolean );
 };
