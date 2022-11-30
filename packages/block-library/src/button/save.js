@@ -33,6 +33,7 @@ export default function save( { attributes, className } ) {
 		return null;
 	}
 
+	const TagName = tagName || 'a';
 	const borderProps = getBorderClassesAndStyles( attributes );
 	const colorProps = getColorClassesAndStyles( attributes );
 	const spacingProps = getSpacingClassesAndStyles( attributes );
@@ -64,7 +65,7 @@ export default function save( { attributes, className } ) {
 	} );
 	return (
 		<div { ...useBlockProps.save( { className: wrapperClasses } ) }>
-			{ 'button' === tagName ? (
+			{ 'button' === TagName ? (
 				<button
 					className={ buttonClasses }
 					title={ title }
@@ -74,7 +75,7 @@ export default function save( { attributes, className } ) {
 				</button>
 			) : (
 				<RichText.Content
-					tagName={ tagName }
+					tagName={ TagName }
 					className={ buttonClasses }
 					href={ url }
 					title={ title }
