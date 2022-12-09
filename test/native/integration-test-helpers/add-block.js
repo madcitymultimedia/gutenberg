@@ -4,11 +4,6 @@
 import { fireEvent } from '@testing-library/react-native';
 
 /**
- * Internal dependencies
- */
-import { waitFor } from './wait-for';
-
-/**
  * Adds a block via the block picker.
  *
  * @param {import('@testing-library/react-native').RenderAPI} screen                   A Testing Library screen.
@@ -21,13 +16,11 @@ export const addBlock = async (
 	blockName,
 	{ isPickerOpened } = {}
 ) => {
-	const { getByLabelText, getByTestId, getByText } = screen;
-
 	if ( ! isPickerOpened ) {
-		fireEvent.press( getByLabelText( 'Add block' ) );
+		fireEvent.press( screen.getByLabelText( 'Add block' ) );
 	}
 
-	const blockList = getByTestId( 'InserterUI-Blocks' );
+	const blockList = screen.getByTestId( 'InserterUI-Blocks' );
 	// onScroll event used to force the FlatList to render all items
 	fireEvent.scroll( blockList, {
 		nativeEvent: {
@@ -37,5 +30,5 @@ export const addBlock = async (
 		},
 	} );
 
-	fireEvent.press( await waitFor( () => getByText( blockName ) ) );
+	fireEvent.press( await screen.findByText( blockName ) );
 };
