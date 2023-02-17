@@ -24,15 +24,6 @@ function gutenberg_register_rest_block_patterns() {
 add_action( 'rest_api_init', 'gutenberg_register_rest_block_patterns' );
 
 /**
- * Registers the form-submit REST API controller.
- */
-function gutenberg_register_rest_form_submit() {
-	$form_submit_controller = new Gutenberg_REST_Block_Form_Submit_Controller();
-	$form_submit_controller->register_routes();
-}
-add_action( 'rest_api_init', 'gutenberg_register_rest_form_submit' );
-
-/**
  * Add extra collection params to pattern directory requests.
  *
  * @param array $query_params JSON Schema-formatted collection parameters.
