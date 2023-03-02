@@ -65,6 +65,7 @@ export default function save( { attributes, className } ) {
 	} );
 	return (
 		<div { ...useBlockProps.save( { className: wrapperClasses } ) }>
+			{ /* Use a condition because we need different attributes depending on the element. */ }
 			{ 'button' === TagName ? (
 				<button
 					className={ buttonClasses }
