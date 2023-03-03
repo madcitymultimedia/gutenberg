@@ -63,29 +63,19 @@ export default function save( { attributes, className } ) {
 		[ `has-custom-width wp-block-button__width-${ width }` ]: width,
 		[ `has-custom-font-size` ]: fontSize || style?.typography?.fontSize,
 	} );
+
 	return (
 		<div { ...useBlockProps.save( { className: wrapperClasses } ) }>
-			{ /* Use a condition because we need different attributes depending on the element. */ }
-			{ 'button' === TagName ? (
-				<button
-					className={ buttonClasses }
-					title={ title }
-					style={ buttonStyle }
-				>
-					{ text }
-				</button>
-			) : (
-				<RichText.Content
-					tagName={ TagName }
-					className={ buttonClasses }
-					href={ url }
-					title={ title }
-					style={ buttonStyle }
-					value={ text }
-					target={ linkTarget }
-					rel={ rel }
-				/>
-			) }
+			<RichText.Content
+				tagName={ TagName }
+				className={ buttonClasses }
+				href={ 'button' === TagName ? null : url }
+				title={ title }
+				style={ buttonStyle }
+				value={ text }
+				target={ 'button' === TagName ? null : linkTarget }
+				rel={ 'button' === TagName ? null : rel }
+			/>
 		</div>
 	);
 }
