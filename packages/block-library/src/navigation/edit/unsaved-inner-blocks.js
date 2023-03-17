@@ -14,11 +14,6 @@ import useNavigationMenu from '../use-navigation-menu';
 import { areBlocksDirty } from './are-blocks-dirty';
 
 const EMPTY_OBJECT = {};
-const DRAFT_MENU_PARAMS = [
-	'postType',
-	'wp_navigation',
-	{ status: 'draft', per_page: -1 },
-];
 
 const DEFAULT_BLOCK = {
 	name: 'core/navigation-link',
@@ -90,28 +85,16 @@ export default function UnsavedInnerBlocks( {
 		}
 	);
 
-	const { isSaving, hasResolvedDraftNavigationMenus } = useSelect(
+	const { isSaving } = useSelect(
 		( select ) => {
 			if ( isDisabled ) {
 				return EMPTY_OBJECT;
 			}
 
-			const {
-				getEntityRecords,
-				hasFinishedResolution,
-				isSavingEntityRecord,
-			} = select( coreStore );
+			const { isSavingEntityRecord } = select( coreStore );
 
 			return {
 				isSaving: isSavingEntityRecord( 'postType', 'wp_navigation' ),
-				draftNavigationMenus: getEntityRecords(
-					// This is needed so that hasResolvedDraftNavigationMenus gives the correct status.
-					...DRAFT_MENU_PARAMS
-				),
-				hasResolvedDraftNavigationMenus: hasFinishedResolution(
-					'getEntityRecords',
-					DRAFT_MENU_PARAMS
-				),
 			};
 		},
 		[ isDisabled ]
@@ -136,7 +119,6 @@ export default function UnsavedInnerBlocks( {
 		if (
 			isDisabled ||
 			isSaving ||
-			! hasResolvedDraftNavigationMenus ||
 			! hasResolvedNavigationMenus ||
 			! hasSelection ||
 			! innerBlocksAreDirty
@@ -150,7 +132,6 @@ export default function UnsavedInnerBlocks( {
 		createNavigationMenu,
 		isDisabled,
 		isSaving,
-		hasResolvedDraftNavigationMenus,
 		hasResolvedNavigationMenus,
 		innerBlocksAreDirty,
 		hasSelection,
