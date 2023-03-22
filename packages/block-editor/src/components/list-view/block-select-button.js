@@ -10,10 +10,12 @@ import {
 	Button,
 	__experimentalHStack as HStack,
 	__experimentalTruncate as Truncate,
+	Tooltip,
 } from '@wordpress/components';
 import { forwardRef } from '@wordpress/element';
 import { Icon, lockSmall as lock } from '@wordpress/icons';
 import { SPACE, ENTER } from '@wordpress/keycodes';
+import { __, sprintf } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -45,6 +47,14 @@ function ListViewBlockSelectButton(
 	} );
 	const { isLocked } = useBlockLock( clientId );
 	const isSticky = blockInformation?.positionType === 'sticky';
+
+	const positionLabel = blockInformation?.positionLabel
+		? sprintf(
+				// translators: 1: Position of selected block, e.g. "Sticky" or "Fixed".
+				__( 'Position: %1$s' ),
+				blockInformation.positionLabel
+		  )
+		: '';
 
 	// The `href` attribute triggers the browser's native HTML drag operations.
 	// When the link is dragged, the element's outerHTML is set in DataTransfer object as text/html.
@@ -80,12 +90,21 @@ function ListViewBlockSelectButton(
 				aria-hidden={ true }
 			>
 				<ListViewExpander onClick={ onToggleExpanded } />
-				<div className="block-editor-list-view-block-select-button__icon-wrapper">
+				{ positionLabel ? (
+					<Tooltip text={ positionLabel }>
+						<div className="block-editor-list-view-block-select-button__icon-wrapper">
+							<BlockIcon
+								icon={ blockInformation?.icon }
+								showColors
+							/>
+							{ isSticky && (
+								<div className="block-editor-list-view-block-select-button__sticky-indicator" />
+							) }
+						</div>
+					</Tooltip>
+				) : (
 					<BlockIcon icon={ blockInformation?.icon } showColors />
-					{ isSticky && (
-						<div className="block-editor-list-view-block-select-button__sticky-indicator" />
-					) }
-				</div>
+				) }
 				<HStack
 					alignment="center"
 					className="block-editor-list-view-block-select-button__label-wrapper"
