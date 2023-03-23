@@ -13,7 +13,11 @@ import {
 	Tooltip,
 } from '@wordpress/components';
 import { forwardRef } from '@wordpress/element';
-import { Icon, lockSmall as lock } from '@wordpress/icons';
+import {
+	Icon,
+	lockSmall as lock,
+	positionSticky as positionStickyIcon,
+} from '@wordpress/icons';
 import { SPACE, ENTER } from '@wordpress/keycodes';
 import { __, sprintf } from '@wordpress/i18n';
 
@@ -98,7 +102,9 @@ function ListViewBlockSelectButton(
 								showColors
 							/>
 							{ isSticky && (
-								<div className="block-editor-list-view-block-select-button__sticky-indicator" />
+								<div className="block-editor-list-view-block-select-button__sticky-indicator">
+									<Icon icon={ positionStickyIcon } />
+								</div>
 							) }
 						</div>
 					</Tooltip>
