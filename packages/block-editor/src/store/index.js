@@ -34,6 +34,6 @@ export const store = createReduxStore( STORE_NAME, {
 	...storeConfig,
 } );
 
-const registeredStore = register( store );
-unlock( registeredStore ).registerPrivateActions( privateActions );
-unlock( registeredStore ).registerPrivateSelectors( privateSelectors );
+unlock( store ).registerPrivateActions( privateActions );
+unlock( store ).registerPrivateSelectors( privateSelectors );
+register( store );
