@@ -225,6 +225,7 @@ describe( 'actions', () => {
 				type: 'REPLACE_BLOCKS',
 				clientIds: [ 'chicken' ],
 				blocks: [ block ],
+				time: expect.any( Number ),
 				initialPosition: 0,
 			} );
 		} );
@@ -293,6 +294,7 @@ describe( 'actions', () => {
 				type: 'REPLACE_BLOCKS',
 				clientIds: [ 'chicken' ],
 				blocks,
+				time: expect.any( Number ),
 				initialPosition: 0,
 			} );
 		} );
@@ -333,6 +335,7 @@ describe( 'actions', () => {
 				type: 'REPLACE_BLOCKS',
 				clientIds: [ 'chicken' ],
 				blocks,
+				time: expect.any( Number ),
 				indexToSelect: null,
 				initialPosition: null,
 				meta: { patternName: 'core/chicken-ribs-pattern' },
@@ -401,6 +404,7 @@ describe( 'actions', () => {
 				blocks: [ block ],
 				index,
 				rootClientId: 'testclientid',
+				time: expect.any( Number ),
 				updateSelection: true,
 				initialPosition: 0,
 			} );
@@ -460,6 +464,7 @@ describe( 'actions', () => {
 				],
 				index: 5,
 				rootClientId: 'testrootid',
+				time: expect.any( Number ),
 				updateSelection: false,
 				initialPosition: null,
 			} );
@@ -506,6 +511,7 @@ describe( 'actions', () => {
 				],
 				index: 5,
 				rootClientId: 'testrootid',
+				time: expect.any( Number ),
 				updateSelection: false,
 				initialPosition: null,
 			} );
@@ -557,6 +563,7 @@ describe( 'actions', () => {
 				blocks: [ ribsBlock, chickenRibsBlock ],
 				index: 5,
 				rootClientId: 'testrootid',
+				time: expect.any( Number ),
 				updateSelection: false,
 				initialPosition: null,
 			} );
@@ -640,6 +647,7 @@ describe( 'actions', () => {
 				blocks: [ ribsBlock, chickenRibsBlock ],
 				index: 5,
 				rootClientId: 'testrootid',
+				time: expect.any( Number ),
 				updateSelection: false,
 				initialPosition: null,
 				meta: { patternName: 'core/chicken-ribs-pattern' },
