@@ -33,7 +33,7 @@ const MainContent = ( {
 	isNavigationMenuMissing,
 	onCreateNew,
 } ) => {
-	const { OffCanvasEditor, LeafMoreMenu } = unlock( blockEditorPrivateApis );
+	const { PrivateListView, LeafMoreMenu } = unlock( blockEditorPrivateApis );
 	// Provide a hierarchy of clientIds for the given Navigation block (clientId).
 	// This is required else the list view will display the entire block tree.
 	const clientIdsTree = useSelect(
@@ -63,13 +63,20 @@ const MainContent = ( {
 				'You have not yet created any menus. Displaying a list of your Pages'
 		  );
 	return (
-		<OffCanvasEditor
-			blocks={ clientIdsTree }
-			parentClientId={ clientId }
-			isExpanded={ true }
-			LeafMoreMenu={ LeafMoreMenu }
-			description={ description }
-		/>
+		<div className="wp-block-navigation__menu-inspector-controls">
+			<PrivateListView
+				blocks={ clientIdsTree }
+				rootClientId={ clientId }
+				isExpanded
+				description={ description }
+				showAppender
+				blockSettingsMenu={ LeafMoreMenu }
+				prioritizedInserterBlocks={ [
+					'core/navigation-link/page',
+					'core/navigation-link',
+				] }
+			/>
+		</div>
 	);
 };
 
