@@ -173,40 +173,40 @@ const alreadyConvertedData = {
 describe( 'convertLegacyData', () => {
 	it( 'converts to the expected format', () => {
 		expect( convertLegacyData( legacyData ) ).toMatchInlineSnapshot( `
-		Object {
-		  "core": Object {
-		    "insertUsage": Object {
-		      "core/group": Object {
+		{
+		  "core": {
+		    "insertUsage": {
+		      "core/group": {
 		        "count": 1,
-		        "insert": Object {
+		        "insert": {
 		          "name": "core/group",
 		        },
 		        "time": 1649321017077,
 		      },
-		      "core/image": Object {
+		      "core/image": {
 		        "count": 1,
-		        "insert": Object {
+		        "insert": {
 		          "name": "core/image",
 		        },
 		        "time": 1649321017053,
 		      },
-		      "core/paragraph": Object {
+		      "core/paragraph": {
 		        "count": 2,
-		        "insert": Object {
+		        "insert": {
 		          "name": "core/paragraph",
 		        },
 		        "time": 1649320988011,
 		      },
-		      "core/quote": Object {
+		      "core/quote": {
 		        "count": 1,
-		        "insert": Object {
+		        "insert": {
 		          "name": "core/quote",
 		        },
 		        "time": 1649320934860,
 		      },
 		    },
 		  },
-		  "core/customize-widgets": Object {
+		  "core/customize-widgets": {
 		    "fixedToolbar": true,
 		    "keepCaretInsideBlock": true,
 		    "welcomeGuide": false,
@@ -257,44 +257,44 @@ describe( 'convertLegacyData', () => {
 	it( 'retains already converted data', () => {
 		expect( convertLegacyData( alreadyConvertedData ) )
 			.toMatchInlineSnapshot( `
-		Object {
-		  "core": Object {
-		    "insertUsage": Object {
-		      "core/group": Object {
+		{
+		  "core": {
+		    "insertUsage": {
+		      "core/group": {
 		        "count": 1,
-		        "insert": Object {
+		        "insert": {
 		          "name": "core/group",
 		        },
 		        "time": 1649321017077,
 		      },
-		      "core/image": Object {
+		      "core/image": {
 		        "count": 1,
-		        "insert": Object {
+		        "insert": {
 		          "name": "core/image",
 		        },
 		        "time": 1649321017053,
 		      },
-		      "core/paragraph": Object {
+		      "core/paragraph": {
 		        "count": 2,
-		        "insert": Object {
+		        "insert": {
 		          "name": "core/paragraph",
 		        },
 		        "time": 1649320988011,
 		      },
-		      "core/quote": Object {
+		      "core/quote": {
 		        "count": 1,
-		        "insert": Object {
+		        "insert": {
 		          "name": "core/quote",
 		        },
 		        "time": 1649320934860,
 		      },
 		    },
 		  },
-		  "core/customize-widgets": Object {
+		  "core/customize-widgets": {
 		    "fixedToolbar": true,
 		    "welcomeGuide": false,
 		  },
-		  "core/edit-post": Object {
+		  "core/edit-post": {
 		    "complementaryArea": "edit-post/block",
 		    "editorMode": "visual",
 		    "fixedToolbar": true,
