@@ -284,6 +284,7 @@ const withBlockTree =
 				);
 				break;
 			case 'UPDATE_BLOCK_ATTRIBUTES': {
+				return state;
 				newState.tree = new Map( newState.tree );
 				action.clientIds.forEach( ( clientId ) => {
 					newState.tree.set( clientId, {
@@ -861,6 +862,7 @@ export const blocks = pipe(
 			}
 
 			case 'UPDATE_BLOCK_ATTRIBUTES': {
+				// return state;
 				// Avoid a state change if none of the block IDs are known.
 				if ( action.clientIds.every( ( id ) => ! state.get( id ) ) ) {
 					return state;
@@ -1343,6 +1345,7 @@ function selectionHelper( state = {}, action ) {
 export function selection( state = {}, action ) {
 	switch ( action.type ) {
 		case 'SELECTION_CHANGE':
+			return state;
 			if ( action.clientId ) {
 				return {
 					selectionStart: {
@@ -1746,6 +1749,7 @@ export function lastBlockAttributesChange( state = null, action ) {
 			return { [ action.clientId ]: action.updates.attributes };
 
 		case 'UPDATE_BLOCK_ATTRIBUTES':
+			return state;
 			return action.clientIds.reduce(
 				( accumulator, id ) => ( {
 					...accumulator,
