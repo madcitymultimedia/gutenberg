@@ -183,6 +183,8 @@ function RichTextWrapper(
 		undo,
 		shouldBlurOnUnmount,
 	} = useSelect( selector );
+
+	const mShouldBlurOnUnmount = useCallback( shouldBlurOnUnmount, [] );
 	const {
 		__unstableMarkLastChangeAsPersistent,
 		enterFormattedText,
@@ -585,8 +587,8 @@ function RichTextWrapper(
 			ref={ mergedRef }
 			value={ adjustedValue }
 			onChange={ adjustedOnChange }
-			selectionStart={ selectionStart }
-			selectionEnd={ selectionEnd }
+			// selectionStart={ selectionStart }
+			// selectionEnd={ selectionEnd }
 			onSelectionChange={ onSelectionChange }
 			tagName={ tagName }
 			start={ start }
@@ -621,7 +623,7 @@ function RichTextWrapper(
 					? originalIsSelected
 					: blockIsSelected
 			}
-			shouldBlurOnUnmount={ shouldBlurOnUnmount }
+			shouldBlurOnUnmount={ mShouldBlurOnUnmount }
 			__unstableMobileNoFocusOnMount={ __unstableMobileNoFocusOnMount }
 			deleteEnter={ deleteEnter }
 			placeholderTextColor={ placeholderTextColor }
@@ -646,65 +648,7 @@ function RichTextWrapper(
 			// for native.
 			id={ props.id }
 			style={ props.style }
-		>
-			{ ( {
-				isSelected: nestedIsSelected,
-				value,
-				onChange,
-				onFocus,
-				editableProps,
-				editableTagName: TagName,
-			} ) => (
-				<>
-					{ children && children( { value, onChange, onFocus } ) }
-					{ nestedIsSelected && hasFormats && (
-						<FormatToolbarContainer
-							inline={ inlineToolbar }
-							anchorRef={ fallbackRef.current }
-						/>
-					) }
-					{ nestedIsSelected && <RemoveBrowserShortcuts /> }
-					<Autocomplete
-						onReplace={ onReplace }
-						completers={ autocompleters }
-						record={ value }
-						onChange={ onChange }
-						isSelected={ nestedIsSelected }
-						contentRef={ fallbackRef }
-					>
-						{ ( { listBoxId, activeId, onKeyDown } ) => (
-							<TagName
-								{ ...editableProps }
-								{ ...props }
-								style={
-									props.style
-										? {
-												...props.style,
-												...editableProps.style,
-										  }
-										: editableProps.style
-								}
-								className={ classnames(
-									classes,
-									props.className,
-									editableProps.className
-								) }
-								aria-autocomplete={
-									listBoxId ? 'list' : undefined
-								}
-								aria-owns={ listBoxId }
-								aria-activedescendant={ activeId }
-								onKeyDown={ ( event ) => {
-									onKeyDown( event );
-									editableProps.onKeyDown( event );
-								} }
-							/>
-						) }
-					</Autocomplete>
-					<EmbedHandlerPicker ref={ embedHandlerPickerRef } />
-				</>
-			) }
-		</RichText>
+		></RichText>
 	);
 }
 

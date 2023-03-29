@@ -64,7 +64,7 @@ function ParagraphBlock( {
 			<RichText
 				identifier="content"
 				tagName="p"
-				value={ content }
+				// value={ content }
 				deleteEnter={ true }
 				style={ styles }
 				onChange={ ( nextContent ) => {

@@ -129,6 +129,10 @@ class BlockListBlock extends Component {
 		this.anchorNodeRef = createRef();
 	}
 
+	shouldComponentUpdate() {
+		return false;
+	}
+
 	onFocus() {
 		const { firstToSelectId, isSelected, onSelect } = this.props;
 		if ( ! isSelected ) {
@@ -291,7 +295,7 @@ class BlockListBlock extends Component {
 							style={ styles.neutralToolbar }
 							ref={ this.anchorNodeRef }
 						>
-							{ isSelected && (
+							{ false && isSelected && (
 								<BlockMobileToolbar
 									clientId={ clientId }
 									onDelete={ onDeleteBlock }

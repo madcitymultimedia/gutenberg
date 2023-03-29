@@ -1165,7 +1165,7 @@ export class RichText extends Component {
 
 		return (
 			<View style={ containerStyles }>
-				{ children &&
+				{ /* { children &&
 					children( {
 						isSelected,
 						value: record,
@@ -1173,7 +1173,7 @@ export class RichText extends Component {
 						onFocus: () => {},
 						editableProps,
 						editableTagName: EditableView,
-					} ) }
+					} ) } */ }
 				<RCTAztecView
 					accessibilityLabel={ accessibilityLabel }
 					ref={ ( ref ) => {
