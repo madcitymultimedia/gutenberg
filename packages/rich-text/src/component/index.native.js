@@ -322,13 +322,13 @@ export class RichText extends Component {
 		this.lastEventCount = event.nativeEvent.eventCount;
 		this.comesFromAztec = true;
 		this.firedAfterTextChanged = true; // The onChange event always fires after the fact.
-		this.onTextUpdate( event );
+		this.onTextUpdate( event.nativeEvent.text );
 		this.lastAztecEventType = 'input';
 	}
 
-	onTextUpdate( event ) {
+	onTextUpdate( text ) {
 		const contentWithoutRootTag = this.removeRootTagsProduceByAztec(
-			unescapeSpaces( event.nativeEvent.text )
+			unescapeSpaces( text )
 		);
 		let formattedContent = contentWithoutRootTag;
 		if ( ! this.isIOS ) {
@@ -597,7 +597,7 @@ export class RichText extends Component {
 			event.nativeEvent.text &&
 			event.nativeEvent.text !== this.props.value
 		) {
-			this.onTextUpdate( event );
+			this.onTextUpdate( event.nativeEvent.text );
 		}
 
 		if ( this.props.onBlur ) {
@@ -640,7 +640,6 @@ export class RichText extends Component {
 		}
 		return shouldDrop;
 	}
-
 	onSelectionChangeFromAztec( start, end, text, event ) {
 		if ( this.shouldDropEventFromAztec( event, 'onSelectionChange' ) ) {
 			return;
@@ -653,7 +652,7 @@ export class RichText extends Component {
 
 		// Check and dicsard stray event, where the text and selection is equal to the ones already cached.
 		const contentWithoutRootTag = this.removeRootTagsProduceByAztec(
-			unescapeSpaces( event.nativeEvent.text )
+			unescapeSpaces( text )
 		);
 		if (
 			contentWithoutRootTag === this.value &&
@@ -663,28 +662,45 @@ export class RichText extends Component {
 			return;
 		}
 
-		this.comesFromAztec = true;
-		this.firedAfterTextChanged = true; // Selection change event always fires after the fact.
+		const {
+			nativeEvent: { eventCount },
+		} = event;
 
-		// Update text before updating selection
-		// Make sure there are changes made to the content before upgrading it upward.
-		this.onTextUpdate( event );
-
-		// Aztec can send us selection change events after it has lost focus.
-		// For instance the autocorrect feature will complete a partially written
-		// word when resigning focus, causing a selection change event.
-		// Forwarding this selection change could cause this RichText to regain
-		// focus and start a focus loop.
-		//
-		// See https://github.com/wordpress-mobile/gutenberg-mobile/issues/1696
-		if ( this.props.__unstableIsSelected ) {
-			this.onSelectionChange( realStart, realEnd );
-		}
-		// Update lastEventCount to prevent Aztec from re-rendering the content it just sent.
-		this.lastEventCount = event.nativeEvent.eventCount;
-
-		this.lastAztecEventType = 'selection change';
+		this.donSelectionChangeFromAztec(
+			realStart,
+			realEnd,
+			text,
+			eventCount
+		);
 	}
+
+	donSelectionChangeFromAztec = debounce(
+		( start, end, text, eventCount ) => {
+			this.comesFromAztec = true;
+			this.firedAfterTextChanged = true; // Selection change event always fires after the fact.
+
+			// Update text before updating selection
+			// Make sure there are changes made to the content before upgrading it upward.
+			this.onTextUpdate( text );
+
+			// Aztec can send us selection change events after it has lost focus.
+			// For instance the autocorrect feature will complete a partially written
+			// word when resigning focus, causing a selection change event.
+			// Forwarding this selection change could cause this RichText to regain
+			// focus and start a focus loop.
+			//
+			// See https://github.com/wordpress-mobile/gutenberg-mobile/issues/1696
+			if ( this.props.__unstableIsSelected ) {
+				console.log( '>>> onSelectionChange' );
+				this.onSelectionChange( start, end );
+			}
+			// Update lastEventCount to prevent Aztec from re-rendering the content it just sent.
+			this.lastEventCount = eventCount;
+
+			this.lastAztecEventType = 'selection change';
+		},
+		300
+	);
 
 	isEmpty() {
 		return isEmpty( this.formatToValue( this.props.value ) );
