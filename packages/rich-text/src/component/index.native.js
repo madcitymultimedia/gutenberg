@@ -326,7 +326,7 @@ export class RichText extends Component {
 		this.lastAztecEventType = 'input';
 	}
 
-	onTextUpdate( text ) {
+	onTextUpdate = debounce( ( text ) => {
 		const contentWithoutRootTag = this.removeRootTagsProduceByAztec(
 			unescapeSpaces( text )
 		);
@@ -344,9 +344,10 @@ export class RichText extends Component {
 
 		// We don't want to refresh if our goal is just to create a record.
 		if ( refresh ) {
+			console.log( '>>> onTextUpdate > onChange' );
 			this.props.onChange( formattedContent );
 		}
-	}
+	}, 300 );
 
 	restoreParagraphTags( value, tag ) {
 		if ( tag === 'p' && ( ! value || ! value.startsWith( '<p>' ) ) ) {
