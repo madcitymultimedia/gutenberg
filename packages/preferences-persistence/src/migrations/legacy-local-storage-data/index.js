@@ -14,7 +14,7 @@ import convertEditPostPanels from './convert-edit-post-panels';
  *
  * @return {Object | null} The local storage data.
  */
-function getLegacyData( userId ) {
+export function getLegacyData( userId ) {
 	const key = `WP_DATA_USER_${ userId }`;
 	const unparsedData = window.localStorage.getItem( key );
 	return JSON.parse( unparsedData );
@@ -90,6 +90,16 @@ export function convertLegacyData( data ) {
 	// The new system is only concerned with persisting
 	// 'core/preferences' preferences reducer, so only return that.
 	return data?.[ 'core/preferences' ]?.preferences;
+}
+
+export function convertLegacyInsertUsageData( data ) {
+	data = moveIndividualPreference(
+		data,
+		{ from: 'core/block-editor', to: 'core' },
+		'insertUsage'
+	);
+
+	return data?.[ 'core/preferences' ]?.preferences?.core?.insertUsage;
 }
 
 /**
