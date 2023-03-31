@@ -101,17 +101,3 @@ export function convertLegacyInsertUsageData( data ) {
 
 	return data?.[ 'core/preferences' ]?.preferences?.core?.insertUsage;
 }
-
-/**
- * Gets the legacy local storage data for the given user and returns the
- * data converted to the new format.
- *
- * @param {string | number} userId The user id.
- *
- * @return {Object | undefined} The converted data or undefined if no local
- *                              storage data could be found.
- */
-export default function convertLegacyLocalStorageData( userId ) {
-	const data = getLegacyData( userId );
-	return convertLegacyData( data );
-}
