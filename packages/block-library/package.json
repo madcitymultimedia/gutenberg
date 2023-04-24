@@ -69,7 +69,8 @@
 		"lodash": "^4.17.21",
 		"memize": "^1.1.0",
 		"micromodal": "^0.4.10",
-		"remove-accents": "^0.4.2"
+		"remove-accents": "^0.4.2",
+		"uuid": "^8.3.0"
 	},
 	"peerDependencies": {
 		"react": "^18.0.0",
