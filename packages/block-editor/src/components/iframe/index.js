@@ -13,6 +13,7 @@ import {
 	useMemo,
 	useReducer,
 	renderToString,
+	useEffect,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
@@ -122,11 +123,22 @@ function Iframe( {
 	const [ iframeDocument, setIframeDocument ] = useState();
 	const [ bodyClasses, setBodyClasses ] = useState( [] );
 	const styles = useParsedAssets( assets?.styles );
-	const styleIds = styles.map( ( style ) => style.id );
 	const compatStyles = useCompatibilityStyles();
-	const neededCompatStyles = compatStyles.filter(
-		( style ) => ! styleIds.includes( style.id )
-	);
+	const neededCompatStyles = useMemo( () => {
+		const styleIds = styles.map( ( style ) => style.id );
+		return compatStyles.filter(
+			( style ) => ! styleIds.includes( style.id )
+		);
+	}, [ styles, compatStyles ] );
+	useEffect( () => {
+		for ( const style of neededCompatStyles ) {
+			// eslint-disable-next-line no-console
+			console.warn(
+				`${ style.id } was added to the iframe incorrectly. Please use block.json or enqueue_block_assets to add styles to the iframe.`,
+				style
+			);
+		}
+	}, [ neededCompatStyles ] );
 	const scripts = useParsedAssets( assets?.scripts );
 	const clearerRef = useBlockSelectionClearer();
 	const [ before, writingFlowRef, after ] = useWritingFlow();
