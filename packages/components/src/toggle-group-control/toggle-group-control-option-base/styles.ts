@@ -109,3 +109,11 @@ const isIconStyles = ( {
 		padding-right: 0;
 	`;
 };
+
+export const backdropView = css`
+	background: ${ COLORS.gray[ 900 ] };
+	border-radius: ${ CONFIG.controlBorderRadius };
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+`;

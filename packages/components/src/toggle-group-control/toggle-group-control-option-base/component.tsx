@@ -4,11 +4,14 @@
 import type { ForwardedRef } from 'react';
 // eslint-disable-next-line no-restricted-imports
 import { Radio } from 'reakit';
+// eslint-disable-next-line no-restricted-imports
+import { motion, useReducedMotion } from 'framer-motion';
 
 /**
  * WordPress dependencies
  */
 import { useInstanceId } from '@wordpress/compose';
+// import { useMemo } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -29,6 +32,12 @@ import Tooltip from '../../tooltip';
 
 const { ButtonContentView, LabelView } = styles;
 
+const REDUCED_MOTION_TRANSITION_CONFIG = {
+	duration: 0,
+};
+
+const LAYOUT_ID = 'toggle-group-backdrop-shared-layout-id';
+
 const WithToolTip = ( { showTooltip, text, children }: WithToolTipProps ) => {
 	if ( showTooltip && text ) {
 		return (
@@ -48,6 +57,7 @@ function ToggleGroupControlOptionBase(
 	>,
 	forwardedRef: ForwardedRef< any >
 ) {
+	const shouldReduceMotion = useReducedMotion();
 	const toggleGroupControlContext = useToggleGroupControlContext();
 	const id = useInstanceId(
 		ToggleGroupControlOptionBase,
@@ -75,10 +85,11 @@ function ToggleGroupControlOptionBase(
 	const isPressed = otherContextProps.state === value;
 	const cx = useCx();
 	const labelViewClasses = cx( isBlock && styles.labelBlock );
-	const classes = cx(
+	const itemClasses = cx(
 		styles.buttonView( { isDeselectable, isIcon, isPressed, size } ),
 		className
 	);
+	const backdropClasses = cx( styles.backdropView );
 
 	const buttonOnClick = () => {
 		if ( isDeselectable && isPressed ) {
@@ -90,7 +101,7 @@ function ToggleGroupControlOptionBase(
 
 	const commonProps = {
 		...otherButtonProps,
-		className: classes,
+		className: itemClasses,
 		'data-value': value,
 		ref: forwardedRef,
 	};
@@ -123,6 +134,19 @@ function ToggleGroupControlOptionBase(
 					</Radio>
 				) }
 			</WithToolTip>
+			{ /* Animated backdrop using framer motion's shared layout animation */ }
+			{ isPressed ? (
+				<motion.div
+					className={ backdropClasses }
+					transition={
+						shouldReduceMotion
+							? REDUCED_MOTION_TRANSITION_CONFIG
+							: undefined
+					}
+					role="presentation"
+					layoutId={ LAYOUT_ID }
+				/>
+			) : null }
 		</LabelView>
 	);
 }
