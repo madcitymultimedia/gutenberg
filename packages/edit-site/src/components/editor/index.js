@@ -49,6 +49,16 @@ const interfaceLabels = {
 	footer: __( 'Editor footer' ),
 };
 
+function useIsEditorLoading() {
+	const { hasResolvingSelectors } = useSelect( ( select ) => {
+		return {
+			hasResolvingSelectors: select( coreStore ).hasResolvingSelectors(),
+		};
+	} );
+
+	return hasResolvingSelectors;
+}
+
 export default function Editor() {
 	const {
 		record: editedPost,
@@ -57,12 +67,6 @@ export default function Editor() {
 	} = useEditedEntityRecord();
 
 	const { id: editedPostId, type: editedPostType } = editedPost;
-
-	const { hasResolvingSelectors } = useSelect( ( select ) => {
-		return {
-			hasResolvingSelectors: select( coreStore ).hasResolvingSelectors(),
-		};
-	} );
 
 	const {
 		context,
@@ -158,7 +162,7 @@ export default function Editor() {
 	// action in <URlQueryController> from double-announcing.
 	useTitle( hasLoadedPost && title );
 
-	if ( ! hasLoadedPost || hasResolvingSelectors ) {
+	if ( useIsEditorLoading() || ! hasLoadedPost ) {
 		return <CanvasSpinner />;
 	}
 
