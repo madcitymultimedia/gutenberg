@@ -33,8 +33,6 @@ import {
 import { BlockDraggableWrapper } from '../block-draggable';
 import { store as blockEditorStore } from '../../store';
 
-const identity = ( x ) => x;
-
 const stylesMemo = {};
 const getStyles = (
 	isRootList,
@@ -204,6 +202,7 @@ export class BlockList extends Component {
 		const {
 			clearSelectedBlock,
 			blockClientIds,
+			rootClientId,
 			title,
 			header,
 			isReadOnly,
@@ -274,7 +273,10 @@ export class BlockList extends Component {
 						horizontalAlignment
 					) }
 					data={ blockClientIds }
-					keyExtractor={ identity }
+					keyExtractor={ ( clientId, index ) =>
+						`${ clientId }-${ index }`
+					}
+					listKey={ rootClientId }
 					renderItem={ this.renderItem }
 					CellRendererComponent={ this.getCellRendererComponent }
 					shouldPreventAutomaticScroll={
@@ -422,6 +424,7 @@ export default compose( [
 					Platform.OS === 'ios' && isBlockInsertionPointVisible(),
 				isReadOnly,
 				isRootList: rootClientId === undefined,
+				rootClientId,
 				isFloatingToolbarVisible,
 				isStackedHorizontally,
 				maxWidth,
