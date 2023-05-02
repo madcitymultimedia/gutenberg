@@ -38,6 +38,8 @@
 		"@emotion/styled": "^11.6.0",
 		"@emotion/utils": "^1.0.0",
 		"@floating-ui/react-dom": "1.0.0",
+		"@types/gradient-parser": "0.1.2",
+		"@types/highlight-words-core": "1.2.1",
 		"@use-gesture/react": "^10.2.24",
 		"@wordpress/a11y": "file:../a11y",
 		"@wordpress/compose": "file:../compose",
