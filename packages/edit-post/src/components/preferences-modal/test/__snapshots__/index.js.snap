@@ -523,6 +523,54 @@ exports[`EditPostPreferencesModal should match snapshot when the modal is active
                 </p>
               </div>
             </div>
+            <div
+              class="interface-preferences-modal__option"
+            >
+              <div
+                class="components-base-control components-toggle-control emotion-0 emotion-1"
+              >
+                <div
+                  class="components-base-control__field emotion-2 emotion-3"
+                >
+                  <div
+                    class="components-flex components-h-stack emotion-4 emotion-5"
+                    data-wp-c16t="true"
+                    data-wp-component="HStack"
+                  >
+                    <span
+                      class="components-form-toggle"
+                    >
+                      <input
+                        aria-describedby="inspector-toggle-control-7__help"
+                        class="components-form-toggle__input"
+                        id="inspector-toggle-control-7"
+                        type="checkbox"
+                      />
+                      <span
+                        class="components-form-toggle__track"
+                      />
+                      <span
+                        class="components-form-toggle__thumb"
+                      />
+                    </span>
+                    <label
+                      class="components-flex-item components-flex-block components-toggle-control__label emotion-6 emotion-5"
+                      data-wp-c16t="true"
+                      data-wp-component="FlexBlock"
+                      for="inspector-toggle-control-7"
+                    >
+                      Allow right-click contextual menus
+                    </label>
+                  </div>
+                </div>
+                <p
+                  class="components-base-control__help emotion-8 emotion-9"
+                  id="inspector-toggle-control-7__help"
+                >
+                  Allows contextual menus via right-click, overriding browser defaults.
+                </p>
+              </div>
+            </div>
           </fieldset>
         </div>
       </div>
