@@ -143,7 +143,6 @@ const getAllBlocks = () => {
 		buttons,
 		calendar,
 		categories,
-		...( window.wp && window.wp.oldEditor ? [ classic ] : [] ), // Only add the classic block in WP Context.
 		code,
 		column,
 		columns,
@@ -232,6 +231,11 @@ const getAllBlocks = () => {
 		blocks.push( details );
 		blocks.push( detailsContent );
 		blocks.push( detailsSummary );
+	}
+
+	// Only add the classic block in WP Context
+	if ( window?.wp?.oldEditor && ! window?.__experimentalDisableTinymce ) {
+		blocks.push( classic );
 	}
 	return blocks.filter( Boolean );
 };
