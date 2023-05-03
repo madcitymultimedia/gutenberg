@@ -72,6 +72,7 @@ describe( 'selectors', () => {
 			};
 			const setInserterOpened = () => {};
 			expect( getSettings( state, setInserterOpened ) ).toEqual( {
+				allowRightClickOverrides: false,
 				outlineMode: true,
 				focusMode: false,
 				hasFixedToolbar: false,
@@ -96,6 +97,7 @@ describe( 'selectors', () => {
 			const setInserterOpened = () => {};
 
 			expect( getSettings( state, setInserterOpened ) ).toEqual( {
+				allowRightClickOverrides: false,
 				outlineMode: true,
 				key: 'value',
 				focusMode: true,

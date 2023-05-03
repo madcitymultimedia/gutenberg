@@ -29,6 +29,7 @@ function ListViewBlockSelectButton(
 		className,
 		block: { clientId },
 		onClick,
+		onContextMenu,
 		onToggleExpanded,
 		tabIndex,
 		onFocus,
@@ -71,6 +72,7 @@ function ListViewBlockSelectButton(
 					className
 				) }
 				onClick={ onClick }
+				onContextMenu={ onContextMenu }
 				onKeyDown={ onKeyDownHandler }
 				ref={ ref }
 				tabIndex={ tabIndex }
