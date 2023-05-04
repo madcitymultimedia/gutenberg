@@ -10,7 +10,6 @@ import { useContext, useEffect, useRef, useMemo } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import useNavigationMenu from '../use-navigation-menu';
 import { areBlocksDirty } from './are-blocks-dirty';
 
 const EMPTY_OBJECT = {};
@@ -85,22 +84,29 @@ export default function UnsavedInnerBlocks( {
 		}
 	);
 
-	const { isSaving } = useSelect(
+	const { isSaving, hasResolvedAllNavigationMenus } = useSelect(
 		( select ) => {
 			if ( isDisabled ) {
 				return EMPTY_OBJECT;
 			}
 
-			const { isSavingEntityRecord } = select( coreStore );
+			const { hasFinishedResolution, isSavingEntityRecord } =
+				select( coreStore );
 
 			return {
 				isSaving: isSavingEntityRecord( 'postType', 'wp_navigation' ),
+				hasResolvedAllNavigationMenus: hasFinishedResolution(
+					'getEntityRecords',
+					[
+						'postType',
+						'wp_navigation',
+						{ per_page: -1, status: [ 'publish', 'draft' ] },
+					]
+				),
 			};
 		},
 		[ isDisabled ]
 	);
-
-	const { hasResolvedNavigationMenus } = useNavigationMenu();
 
 	// Automatically save the uncontrolled blocks.
 	useEffect( () => {
@@ -119,7 +125,7 @@ export default function UnsavedInnerBlocks( {
 		if (
 			isDisabled ||
 			isSaving ||
-			! hasResolvedNavigationMenus ||
+			! hasResolvedAllNavigationMenus ||
 			! hasSelection ||
 			! innerBlocksAreDirty
 		) {
@@ -132,7 +138,7 @@ export default function UnsavedInnerBlocks( {
 		createNavigationMenu,
 		isDisabled,
 		isSaving,
-		hasResolvedNavigationMenus,
+		hasResolvedAllNavigationMenus,
 		innerBlocksAreDirty,
 		hasSelection,
 	] );
