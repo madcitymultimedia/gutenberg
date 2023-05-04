@@ -191,6 +191,11 @@ if ( ! function_exists( 'wp_print_fonts' ) ) {
 
 		_wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
 
+		// Automatically enqueue all user-selected fonts.
+		if ( false === $handles ) {
+			WP_Fonts_Resolver::enqueue_user_selected_fonts();
+		}
+
 		return $wp_fonts->do_items( $handles );
 	}
 }
