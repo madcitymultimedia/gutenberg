@@ -77,7 +77,7 @@ function OffCanvasEditor(
 		showAppender = true,
 		LeafMoreMenu,
 		description = __( 'Block navigation structure' ),
-		onSelect = null,
+		onSelect,
 		renderAdditionalBlockUI,
 	},
 	ref
