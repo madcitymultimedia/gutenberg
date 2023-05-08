@@ -12,6 +12,8 @@ import {
 	__unstableMotion as motion,
 	__unstableAnimatePresence as AnimatePresence,
 	__experimentalHStack as HStack,
+	ExternalLink,
+	Tooltip,
 } from '@wordpress/components';
 import { useReducedMotion } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
@@ -30,15 +32,20 @@ import { unlock } from '../../private-apis';
 const HUB_ANIMATION_DURATION = 0.3;
 
 const SiteHub = forwardRef( ( props, ref ) => {
-	const { canvasMode, dashboardLink } = useSelect( ( select ) => {
+	const { canvasMode, dashboardLink, homeUrl } = useSelect( ( select ) => {
 		const { getCanvasMode, getSettings } = unlock(
 			select( editSiteStore )
 		);
+
+		const {
+			getUnstableBase, // Site index.
+		} = select( coreStore );
 
 		return {
 			canvasMode: getCanvasMode(),
 			dashboardLink:
 				getSettings().__experimentalDashboardLink || 'index.php',
+			homeUrl: getUnstableBase()?.home,
 		};
 	}, [] );
 
@@ -139,6 +146,28 @@ const SiteHub = forwardRef( ( props, ref ) => {
 						} }
 					>
 						{ decodeEntities( siteTitle ) }
+					</motion.div>
+				</AnimatePresence>
+				<AnimatePresence>
+					<motion.div
+						layout={ canvasMode === 'edit' }
+						animate={ {
+							opacity: canvasMode === 'view' ? 1 : 0,
+						} }
+						exit={ {
+							opacity: 0,
+						} }
+						className="edit-site-site-hub__site-view"
+						transition={ {
+							type: 'tween',
+							duration: disableMotion ? 0 : 0.2,
+							ease: 'easeOut',
+							delay: canvasMode === 'view' ? 0.1 : 0,
+						} }
+					>
+						<Tooltip text={ __( 'View site' ) }>
+							<ExternalLink href={ homeUrl } />
+						</Tooltip>
 					</motion.div>
 				</AnimatePresence>
 			</HStack>
