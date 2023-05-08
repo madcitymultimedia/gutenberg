@@ -65,7 +65,7 @@ export const BLOCK_LIST_ITEM_HEIGHT = 36;
  * @param {?ComponentType} props.blockSettingsMenu Optional more menu substitution. Defaults to the standard `BlockSettingsDropdown` component.
  * @param {string}         props.rootClientId      The client id of the root block from which we determine the blocks to show in the list.
  * @param {string}         props.description       Optional accessible description for the tree grid component.
- * @param {string}         props.onSelect          Optional callback to be invoked when a block is selected.
+ * @param {string}         props.onSelect          Optional callback to be invoked when a block is selected. Receives the block object that was selected.
  * @param {Ref}            ref                     Forwarded ref
  */
 function ListViewComponent(
