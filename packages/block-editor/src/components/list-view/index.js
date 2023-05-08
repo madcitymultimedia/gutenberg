@@ -65,7 +65,9 @@ export const BLOCK_LIST_ITEM_HEIGHT = 36;
  * @param {?ComponentType} props.blockSettingsMenu         Optional more menu substitution. Defaults to the standard `BlockSettingsDropdown` component.
  * @param {string}         props.rootClientId              The client id of the root block from which we determine the blocks to show in the list.
  * @param {string}         props.description               Optional accessible description for the tree grid component.
+ * @param {?Function}      props.onSelect                  Optional callback to be invoked when a block is selected. Receives the block object that was selected.
  * @param {Array}          props.prioritizedInserterBlocks An array of block types to show first in the appender.
+ * @param {Function}       props.renderAdditionalBlockUI   Function that renders additional block content UI.
  * @param {Ref}            ref                             Forwarded ref
  */
 function ListViewComponent(
@@ -79,6 +81,8 @@ function ListViewComponent(
 		rootClientId,
 		description,
 		prioritizedInserterBlocks,
+		onSelect,
+		renderAdditionalBlockUI,
 	},
 	ref
 ) {
@@ -97,6 +101,7 @@ function ListViewComponent(
 	const { clientIdsTree, draggedClientIds, selectedClientIds } =
 		useListViewClientIds( { blocks, rootClientId } );
 
+	const { getBlock } = useSelect( blockEditorStore );
 	const { visibleBlockCount, shouldShowInnerBlocks } = useSelect(
 		( select ) => {
 			const {
@@ -130,11 +135,14 @@ function ListViewComponent(
 		setExpandedState,
 	} );
 	const selectEditorBlock = useCallback(
-		( event, clientId ) => {
-			updateBlockSelection( event, clientId );
-			setSelectedTreeId( clientId );
+		( event, blockClientId ) => {
+			updateBlockSelection( event, blockClientId );
+			setSelectedTreeId( blockClientId );
+			if ( onSelect ) {
+				onSelect( getBlock( blockClientId ) );
+			}
 		},
-		[ setSelectedTreeId, updateBlockSelection ]
+		[ setSelectedTreeId, updateBlockSelection, onSelect, getBlock ]
 	);
 	useEffect( () => {
 		isMounted.current = true;
@@ -205,6 +213,7 @@ function ListViewComponent(
 			collapse,
 			BlockSettingsMenu,
 			listViewInstanceId: instanceId,
+			renderAdditionalBlockUI,
 		} ),
 		[
 			draggedClientIds,
@@ -213,6 +222,7 @@ function ListViewComponent(
 			collapse,
 			BlockSettingsMenu,
 			instanceId,
+			renderAdditionalBlockUI,
 		]
 	);
 
@@ -268,6 +278,8 @@ export default forwardRef( ( props, ref ) => {
 			blockSettingsMenu={ BlockSettingsDropdown }
 			rootClientId={ null }
 			prioritizedInserterBlocks={ null }
+			onSelect={ null }
+			renderAdditionalBlockUICallback={ null }
 		/>
 	);
 } );
